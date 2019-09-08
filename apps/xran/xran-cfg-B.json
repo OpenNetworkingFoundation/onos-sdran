@@ -1,0 +1,104 @@
+{
+  "apps": {
+    "org.onosproject.xran": {
+      "xran": {
+        "active_cells": [
+          {
+            "plmn_id": "000001",
+            "eci": "00000010",
+            "ip_addr": "1.1.1.2",
+            "grid_x": "-400",
+	    "grid_y": "600"
+          },
+          {
+            "plmn_id": "000002",
+            "eci": "00000020",
+            "ip_addr": "1.1.1.3",
+            "grid_x": "-161.11",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "000003",
+            "eci": "00000030",
+            "ip_addr": "1.1.1.4",
+            "grid_x": "77.78",
+	    "grid_y": "600"
+          },
+       	  {
+            "plmn_id": "000004",
+            "eci": "00000040",
+            "ip_addr": "1.1.1.5",
+            "grid_x": "316.67",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "000005",
+            "eci": "00000050",
+            "ip_addr": "1.1.1.6",
+            "grid_x": "555.56",
+	    "grid_y": "600"
+          },
+	  {
+            "plmn_id": "000006",
+            "eci": "00000060",
+            "ip_addr": "1.1.1.7",
+            "grid_x": "794.44",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "000007",
+            "eci": "00000070",
+            "ip_addr": "1.1.1.8",
+            "grid_x": "1033.33",
+	    "grid_y": "600"
+          },
+	  {
+            "plmn_id": "000008",
+            "eci": "00000080",
+            "ip_addr": "1.1.1.9",
+            "grid_x": "1272.22",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "000009",
+            "eci": "00000090",
+            "ip_addr": "1.1.1.10",
+            "grid_x": "1511.11",
+	    "grid_y": "600"
+          },
+	  {
+            "plmn_id": "00000A",
+            "eci": "000000A0",
+            "ip_addr": "1.1.1.11",
+            "grid_x": "1650",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "00000B",
+            "eci": "000000B0",
+            "ip_addr": "1.1.1.12",
+            "grid_x": "4700",
+	    "grid_y": "300"
+          },
+	  {
+            "plmn_id": "00000C",
+            "eci": "000000C0",
+            "ip_addr": "1.1.1.13",
+            "grid_x": "5200",
+	    "grid_y": "600"
+          }
+	],
+        "l2_meas_report_interval_ms": 5000,
+        "rx_signal_meas_report_interval_ms": 7000,
+        "xranc_cellconfigrequest_interval_seconds": 10,
+        "xranc_bind_ip": "1.1.1.1",
+        "xranc_port": 7891,
+        "admission_success": true,
+        "bearer_success": true,
+        "no_meas_link_removal_ms": 1000000,
+        "idle_ue_removal_ms": 1000000,
+        "nb_response_timeout_ms": 10000
+      }
+    }
+  }
+}

@@ -27,6 +27,7 @@
     var remappedDeviceTypes = {
         switch: 'm_switch',
         virtual: 'cord',
+        base_station: 'm_base_station',
     };
 
     function createDeviceCollection(data) {

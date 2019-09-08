@@ -30,6 +30,8 @@ import org.onosproject.net.config.basics.BasicHostConfig;
 import org.onosproject.net.device.DeviceService;
 import org.onosproject.net.host.HostService;
 import org.onosproject.net.link.LinkService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -44,6 +46,8 @@ public abstract class LayoutAlgorithm {
     public static final String ACCESS = "access";
     public static final String GATEWAY = "gateway";
     public static final String COMPUTE = "compute";
+    protected static final Logger log =
+            LoggerFactory.getLogger(LayoutAlgorithm.class);
 
     protected DeviceService deviceService;
     protected HostService hostService;
@@ -92,6 +96,7 @@ public abstract class LayoutAlgorithm {
      * @param y grid Y
      */
     protected void place(HostId id, double x, double y) {
+log.info("Ankit....... > HostId"+id.toString());
         netConfigService.addConfig(id, BasicHostConfig.class)
                 .gridX(x).gridY(y).locType("grid").apply();
     }

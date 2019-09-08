@@ -15,6 +15,9 @@
  */
 package org.onosproject.net.host.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Sets;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -30,19 +33,16 @@ import org.onlab.packet.MacAddress;
 import org.onlab.packet.VlanId;
 import org.onlab.util.Tools;
 import org.onosproject.cfg.ComponentConfigService;
+import org.onosproject.net.*;
+import org.onosproject.net.config.ConfigApplyDelegate;
 import org.onosproject.net.intf.Interface;
 import org.onosproject.net.intf.InterfaceService;
-import org.onosproject.net.HostLocation;
 import org.onosproject.net.edge.EdgePortService;
 import org.onosproject.net.provider.AbstractListenerProviderRegistry;
 import org.onosproject.net.config.NetworkConfigEvent;
 import org.onosproject.net.config.NetworkConfigListener;
 import org.onosproject.net.config.NetworkConfigService;
 import org.onosproject.net.config.basics.BasicHostConfig;
-import org.onosproject.net.ConnectPoint;
-import org.onosproject.net.DeviceId;
-import org.onosproject.net.Host;
-import org.onosproject.net.HostId;
 import org.onosproject.net.device.DeviceService;
 import org.onosproject.net.host.HostAdminService;
 import org.onosproject.net.host.HostDescription;
@@ -60,13 +60,11 @@ import org.osgi.service.component.ComponentContext;
 
 import org.slf4j.Logger;
 
-import java.util.Dictionary;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -94,6 +92,8 @@ public class HostManager
     private final NetworkConfigListener networkConfigListener = new InternalNetworkConfigListener();
 
     private HostStoreDelegate delegate = new InternalStoreDelegate();
+    public List<String> coordinates = new ArrayList<>();
+    public static int countLines =0;
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected HostStore store;
@@ -210,6 +210,29 @@ public class HostManager
                 stopMonitoring();
             }
         }
+    }
+
+    public  int readCSV(){
+//log.info("\n$$$$$$$$$$$$ File => "+ System.getProperty("user.home")+"/file_test13.csv");
+        int countLine = 0;
+        FileReader csvFile = null;
+        String charArr[];
+        String line;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.home")+"/file_test21.csv"));
+            if (countLines ==0) {
+                while ((line = br.readLine()) != null) {
+                    charArr = line.split(",");
+                    coordinates.add(charArr[1]);
+                    countLine++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        countLines = countLine;
+        return countLines;
     }
 
     /**
@@ -502,6 +525,119 @@ public class HostManager
                                 hostId.vlanId()
                         );
                     }
+                }
+            }
+
+            if (store.getHost(hostId).mac().toString().equals(MacAddress.valueOf("00:00:00:00:00:00").toString()) ) {
+		final int[] flag = {1};
+                try {
+                    if (countLines==0) {
+
+                        readCSV();
+                    }
+                    BasicHostConfig cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
+                    if (cfg == null) {
+                        ObjectNode jsonNode = JsonNodeFactory.instance.objectNode();
+                        jsonNode.put(BasicHostConfig.GRID_X, -400);
+                        jsonNode.put(BasicHostConfig.GRID_Y, 450);
+                        jsonNode.put(BasicHostConfig.NAME, hostDescription.annotations().value("name"));
+                        jsonNode.put(BasicHostConfig.UI_TYPE, hostDescription.annotations().value("uiType"));
+                        networkConfigService.applyConfig(hostId, BasicHostConfig.class, jsonNode);
+                        cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
+                    }
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    BasicHostConfig finalCfg = cfg;
+                    executorService.submit(()->{
+//int max=300;
+//                        for (int i = 0; i <= 300; i++) {
+//                            finalCfg.gridX(finalCfg.gridX() + 25);
+//                            log.info("GRID_X   "+ finalCfg.gridX() );
+//                            //cfg.gridY(new Double(+10));
+//                            try {
+//                                Thread.sleep(1000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            HostDescription description = BasicHostOperator
+//                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+//                            store.createOrUpdateHost(provider().id(), hostId,
+//                                    description, replaceIps);
+//                            if (i==max) {
+//                                i=0;
+//                                finalCfg.gridX(new Double("-500"));
+//                                log.info("GRID_X MAX  "+ finalCfg.gridX() );
+//                            }
+//
+//                        }
+//                    });
+//                        Iterator<String> iterator = coordinates.listIterator();
+//                        while (iterator.hasNext()) {
+//                            finalCfg.gridX(finalCfg.gridX() + 1);
+//                            //cfg.gridY(new Double(i+10));
+//                            HostDescription description = BasicHostOperator
+//                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+//                            store.createOrUpdateHost(provider().id(), hostId,
+//                                    description, replaceIps);
+//                            try {
+//                                Thread.sleep(200);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        try {
+//                            Thread.sleep(15000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+			boolean fTravel = true;
+			try {
+                                Thread.sleep(20000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+			synchronized(this){
+			if(flag[0] == 1){
+
+                        for (int i = 0; i < coordinates.size(); i++) {
+			    flag[0] = 0;
+                            finalCfg.gridX(new Double(coordinates.get(i)));
+			//cfg.gridY(new Double(i+10));
+			    log.info("------ UE ----->"+i);		
+       			    log.info("------ UE coordinates ----->"+coordinates.get(i));		
+			    if(Integer.valueOf(coordinates.get(i)) > 1650 && fTravel){
+				    if(Integer.valueOf(coordinates.get(i)) == 1750){
+					    fTravel = false;
+				    }
+				    i=i+9;
+				    continue;
+			    }
+			    if(Integer.valueOf(coordinates.get(i)) < -275 && !fTravel){
+
+				    if(Integer.valueOf(coordinates.get(i)) == -375){
+					    fTravel = true;
+				    }
+				    i=i+9;
+				    continue;
+			    }
+			    HostDescription description = BasicHostOperator
+				    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+			    store.createOrUpdateHost(provider().id(), hostId,
+					    description, replaceIps);
+			    i = i+9;
+			    try {
+				    Thread.sleep(1050);
+			    } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+		    }
+		}
+                    });
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

@@ -68,6 +68,7 @@
     // {virtual -> cord} is for the E-CORD demo at ONS 2016
     var remappedDeviceTypes = {
         virtual: 'cord',
+        base_station: 'm_base_station',
 
         // for now, map to the new glyphs via this lookup.
         // may have to find a better way to do this...
@@ -83,6 +84,7 @@
         router: 'm_router',
         endstation: 'm_endstation',
         bgpSpeaker: 'm_bgpSpeaker',
+        mobile: 'm_mobile',
     };
 
     function mapDeviceTypeToGlyph(type) {

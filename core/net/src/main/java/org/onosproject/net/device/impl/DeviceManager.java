@@ -15,6 +15,8 @@
  */
 package org.onosproject.net.device.impl;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -82,13 +84,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -587,10 +583,27 @@ public class DeviceManager
                 log.info("Device {} registered", deviceId);
             }
 
+
             if (event != null) {
                 log.trace("event: {} {}", event.type(), event);
                 post(event);
             }
+            ObjectNode jsonNode= JsonNodeFactory.instance.objectNode();
+            jsonNode.put(BasicDeviceConfig.GRID_X,deviceDescription.annotations().value("gridX"));
+            jsonNode.put(BasicDeviceConfig.GRID_Y,deviceDescription.annotations().value("gridY"));
+            jsonNode.put(BasicDeviceConfig.NAME, deviceDescription.annotations().value("name"));
+            jsonNode.put(BasicDeviceConfig.UI_TYPE, deviceDescription.annotations().value("uiType"));
+            networkConfigService.applyConfig(deviceId,BasicDeviceConfig.class,jsonNode);
+            cfg = networkConfigService.getConfig(deviceId, BasicDeviceConfig.class);
+            BasicDeviceConfig finalCfg = cfg;
+            DeviceDescription description = BasicDeviceOperator
+                    .combine(finalCfg, BasicDeviceOperator.descriptionOf(store.getDevice(deviceId)));
+            DeviceEvent newevent = store.createOrUpdateDevice(provider().id(), deviceId,
+                    description);
+//            if (newevent != null) {
+//                log.info("newevent: {} {}", newevent.type(), newevent);
+//                post(newevent);
+//            }
         }
 
         private PortDescription ensurePortEnabledState(PortDescription desc, boolean enabled) {
