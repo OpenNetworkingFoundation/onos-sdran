@@ -33,7 +33,6 @@ import org.onlab.packet.IpAddress;
 import org.onosproject.core.ApplicationId;
 import org.onosproject.core.CoreService;
 import org.onosproject.layout.LayoutAlgorithm;
-import org.onosproject.layout.LayoutManager;
 import org.onosproject.net.config.Config;
 import org.onosproject.net.config.ConfigFactory;
 import org.onosproject.net.config.NetworkConfigEvent;
