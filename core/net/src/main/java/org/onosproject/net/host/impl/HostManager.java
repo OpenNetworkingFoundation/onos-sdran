@@ -528,119 +528,119 @@ public class HostManager
                 }
             }
 
-            if (store.getHost(hostId).mac().toString().equals(MacAddress.valueOf("00:00:00:00:00:00").toString()) ) {
-		final int[] flag = {1};
-                try {
-                    if (countLines==0) {
+	    if (store.getHost(hostId).mac().toString().equals(MacAddress.valueOf("00:00:00:00:00:00").toString()) ) {
+		    final int[] flag = {1};
+		    try {
+			    if (countLines==0) {
 
-                        readCSV();
-                    }
-                    BasicHostConfig cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
-                    if (cfg == null) {
-                        ObjectNode jsonNode = JsonNodeFactory.instance.objectNode();
-                        jsonNode.put(BasicHostConfig.GRID_X, -400);
-                        jsonNode.put(BasicHostConfig.GRID_Y, 450);
-                        jsonNode.put(BasicHostConfig.NAME, hostDescription.annotations().value("name"));
-                        jsonNode.put(BasicHostConfig.UI_TYPE, hostDescription.annotations().value("uiType"));
-                        networkConfigService.applyConfig(hostId, BasicHostConfig.class, jsonNode);
-                        cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
-                    }
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    BasicHostConfig finalCfg = cfg;
-                    executorService.submit(()->{
-//int max=300;
-//                        for (int i = 0; i <= 300; i++) {
-//                            finalCfg.gridX(finalCfg.gridX() + 25);
-//                            log.info("GRID_X   "+ finalCfg.gridX() );
-//                            //cfg.gridY(new Double(+10));
-//                            try {
-//                                Thread.sleep(1000);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                            HostDescription description = BasicHostOperator
-//                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
-//                            store.createOrUpdateHost(provider().id(), hostId,
-//                                    description, replaceIps);
-//                            if (i==max) {
-//                                i=0;
-//                                finalCfg.gridX(new Double("-500"));
-//                                log.info("GRID_X MAX  "+ finalCfg.gridX() );
-//                            }
-//
-//                        }
-//                    });
-//                        Iterator<String> iterator = coordinates.listIterator();
-//                        while (iterator.hasNext()) {
-//                            finalCfg.gridX(finalCfg.gridX() + 1);
-//                            //cfg.gridY(new Double(i+10));
-//                            HostDescription description = BasicHostOperator
-//                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
-//                            store.createOrUpdateHost(provider().id(), hostId,
-//                                    description, replaceIps);
-//                            try {
-//                                Thread.sleep(200);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        try {
-//                            Thread.sleep(15000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-			boolean fTravel = true;
-			try {
-                                Thread.sleep(20000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-			synchronized(this){
-			if(flag[0] == 1){
-
-                        for (int i = 0; i < coordinates.size(); i++) {
-			    flag[0] = 0;
-                            finalCfg.gridX(new Double(coordinates.get(i)));
-			//cfg.gridY(new Double(i+10));
-			    log.info("------ UE ----->"+i);		
-       			    log.info("------ UE coordinates ----->"+coordinates.get(i));		
-			    if(Integer.valueOf(coordinates.get(i)) > 1650 && fTravel){
-				    if(Integer.valueOf(coordinates.get(i)) == 1750){
-					    fTravel = false;
-				    }
-				    i=i+9;
-				    continue;
+				    readCSV();
 			    }
-			    if(Integer.valueOf(coordinates.get(i)) < -275 && !fTravel){
-
-				    if(Integer.valueOf(coordinates.get(i)) == -375){
-					    fTravel = true;
-				    }
-				    i=i+9;
-				    continue;
+			    BasicHostConfig cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
+			    if (cfg == null) {
+				    ObjectNode jsonNode = JsonNodeFactory.instance.objectNode();
+				    jsonNode.put(BasicHostConfig.GRID_X, -400);
+				    jsonNode.put(BasicHostConfig.GRID_Y, 450);
+				    jsonNode.put(BasicHostConfig.NAME, hostDescription.annotations().value("name"));
+				    jsonNode.put(BasicHostConfig.UI_TYPE, hostDescription.annotations().value("uiType"));
+				    networkConfigService.applyConfig(hostId, BasicHostConfig.class, jsonNode);
+				    cfg = networkConfigService.getConfig(hostId, BasicHostConfig.class);
 			    }
-			    HostDescription description = BasicHostOperator
-				    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
-			    store.createOrUpdateHost(provider().id(), hostId,
-					    description, replaceIps);
-			    i = i+9;
+			    ExecutorService executorService = Executors.newSingleThreadExecutor();
+			    BasicHostConfig finalCfg = cfg;
+			    executorService.submit(()->{
+				    //int max=300;
+				    //                        for (int i = 0; i <= 300; i++) {
+				    //                            finalCfg.gridX(finalCfg.gridX() + 25);
+				    //                            log.info("GRID_X   "+ finalCfg.gridX() );
+				    //                            //cfg.gridY(new Double(+10));
+				    //                            try {
+				    //                                Thread.sleep(1000);
+				    //                            } catch (InterruptedException e) {
+				    //                                e.printStackTrace();
+				    //                            }
+				    //                            HostDescription description = BasicHostOperator
+				    //                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+				    //                            store.createOrUpdateHost(provider().id(), hostId,
+				    //                                    description, replaceIps);
+				    //                            if (i==max) {
+				    //                                i=0;
+				    //                                finalCfg.gridX(new Double("-500"));
+				    //                                log.info("GRID_X MAX  "+ finalCfg.gridX() );
+				    //                            }
+				    //
+				    //                        }
+				    //                    });
+				    //                        Iterator<String> iterator = coordinates.listIterator();
+				    //                        while (iterator.hasNext()) {
+				    //                            finalCfg.gridX(finalCfg.gridX() + 1);
+				    //                            //cfg.gridY(new Double(i+10));
+				    //                            HostDescription description = BasicHostOperator
+				    //                                    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+				    //                            store.createOrUpdateHost(provider().id(), hostId,
+				    //                                    description, replaceIps);
+				    //                            try {
+				    //                                Thread.sleep(200);
+				    //                            } catch (InterruptedException e) {
+				    //                                e.printStackTrace();
+				    //                            }
+				    //                        }
+				    //                        try {
+				    //                            Thread.sleep(15000);
+				    //                        } catch (InterruptedException e) {
+				    //                            e.printStackTrace();
+				    //                        }
+				    boolean fTravel = true;
 			    try {
-				    Thread.sleep(1050);
+				    Thread.sleep(20000);
 			    } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-		    }
-		}
-                    });
+				    e.printStackTrace();
+			    }
+			    synchronized(this){
+				    if(flag[0] == 1){
+
+					    for (int i = 0; i < coordinates.size(); i++) {
+						    flag[0] = 0;
+						    finalCfg.gridX(new Double(coordinates.get(i)));
+						    //cfg.gridY(new Double(i+10));
+						    log.info("------ UE ----->"+i);		
+						    log.info("------ UE coordinates ----->"+coordinates.get(i));		
+						    if(Integer.valueOf(coordinates.get(i)) > 1650 && fTravel){
+							    if(Integer.valueOf(coordinates.get(i)) == 1750){
+								    fTravel = false;
+							    }
+							    i=i+9;
+							    continue;
+						    }
+						    if(Integer.valueOf(coordinates.get(i)) < -275 && !fTravel){
+
+							    if(Integer.valueOf(coordinates.get(i)) == -375){
+								    fTravel = true;
+							    }
+							    i=i+9;
+							    continue;
+						    }
+						    HostDescription description = BasicHostOperator
+							    .combine(finalCfg, BasicHostOperator.descriptionOf(store.getHost(hostId)));
+						    store.createOrUpdateHost(provider().id(), hostId,
+								    description, replaceIps);
+						    i = i+9;
+						    try {
+							    Thread.sleep(1200);
+						    } catch (InterruptedException e) {
+							    e.printStackTrace();
+						    }
+					    }
+				    }
+			    }
+		    });
 
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+	    } catch (Exception e) {
+		    e.printStackTrace();
+	    }
+	}
+    }
 
         // When a new IP is detected, remove that IP on other hosts if it exists
         public void removeDuplicates(HostId hostId, HostDescription desc) {
