@@ -13,7 +13,7 @@
     "@angular/platform-browser-dynamic": "^7.0.2",
     "@angular/router": "^7.0.2",
     "core-js": "^2.5.4",
-    "d3": "^5.2.0",
+    "d3": "^7.6.1",
     "gui2-fw-lib": "file:../../../web/gui2-fw-lib/gui2-fw-lib-2.1.1.tgz",
     "rxjs": "^6.3.3",
     "zone.js": "^0.8.26"
